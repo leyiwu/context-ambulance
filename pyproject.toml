@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "context-ambulance"
+version = "0.1.0"
+description = "The Eject Button for ChatGPT Doom Loops - Rescue poisoned LLM conversations"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Context Ambulance Team"}
+]
+keywords = ["llm", "chatgpt", "ai", "conversation", "rescue", "debugging"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "click>=8.1.0",
+    "rich>=13.0.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "jinja2>=3.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-mock>=3.12.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+scraping = [
+    "selenium>=4.15.0",
+    "beautifulsoup4>=4.12.0",
+]
+gemini = [
+    "google-generativeai>=0.3.0",
+]
+claude = [
+    "anthropic>=0.7.0",
+]
+openai = [
+    "openai>=1.0.0",
+]
+all = [
+    "context-ambulance[dev,scraping,gemini,claude,openai]",
+]
+
+[project.scripts]
+context-ambulance = "context_ambulance.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/context-ambulance"
+Repository = "https://github.com/yourusername/context-ambulance"
+Issues = "https://github.com/yourusername/context-ambulance/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+context_ambulance = ["templates/*.md", "templates/*.txt"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

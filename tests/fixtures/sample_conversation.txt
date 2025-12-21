@@ -1,0 +1,10 @@
+User: How do I fix this React component error?
+
+```jsx
+function MyComponent() {
+  const [count, setCount] = useState(0);
+  return <div>{count}</div>;
+}
+```
+
+I'm getting "useState is not defined"
