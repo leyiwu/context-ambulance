@@ -14,16 +14,17 @@ SAMPLE_LOOP_CONVERSATION = [
     Message(role=MessageRole.ASSISTANT, content="I apologize for the confusion. Let's try:\n```python\nx = 10\nprint(x)\n```"),
 ]
 
-# Conversation with code churn
+# Conversation with ACTUAL code churn (repetition)
 SAMPLE_CODE_CHURN = [
-    Message(role=MessageRole.USER, content="Write a function to calculate factorial"),
-    Message(role=MessageRole.ASSISTANT, content="```python\ndef factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n-1)\n```"),
-    Message(role=MessageRole.USER, content="Add error handling"),
-    Message(role=MessageRole.ASSISTANT, content="```python\ndef factorial(n):\n    if n < 0:\n        raise ValueError('Negative')\n    if n == 0:\n        return 1\n    return n * factorial(n-1)\n```"),
-    Message(role=MessageRole.USER, content="Make it iterative"),
-    Message(role=MessageRole.ASSISTANT, content="```python\ndef factorial(n):\n    result = 1\n    for i in range(1, n+1):\n        result *= i\n    return result\n```"),
-    Message(role=MessageRole.USER, content="Add the error handling back"),
-    Message(role=MessageRole.ASSISTANT, content="```python\ndef factorial(n):\n    if n < 0:\n        raise ValueError('Negative')\n    result = 1\n    for i in range(1, n+1):\n        result *= i\n    return result\n```"),
+    Message(role=MessageRole.USER, content="Write a function"),
+    
+    # Attempt 1
+    Message(role=MessageRole.ASSISTANT, content="```python\ndef factorial(n):\n    return n * factorial(n-1)\n```"),
+    
+    Message(role=MessageRole.USER, content="That hits recursion limit"),
+    
+    # Attempt 2 (ALMOST IDENTICAL - This is a Doom Loop)
+    Message(role=MessageRole.ASSISTANT, content="```python\n# Added a comment but code is same logic\ndef factorial(n):\n    return n * factorial(n-1)\n```"),
 ]
 
 # Clean conversation (no loops)

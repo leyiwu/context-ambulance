@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Ambulance</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo" id="logoBtn" style="cursor: pointer;" title="Back to Home">
+        <span class="ambulance-icon">🚑</span>
+        <h1>Context Ambulance</h1>
+      </div>
+      <div class="subtitle">The Eject Button for LLM Doom Loops</div>
+    </div>
+
+    <!-- Status Display -->
+    <div id="status" class="status hidden">
+      <div class="status-icon" id="statusIcon"></div>
+      <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent">
+      <!-- Platform Detection -->
+      <div class="platform-info">
+        <span id="platformIcon"></span>
+        <span id="platformName">Detecting platform...</span>
+      </div>
+
+      <!-- Message Count -->
+      <div class="info-card">
+        <div class="info-label">Messages Detected</div>
+        <div class="info-value" id="messageCount">--</div>
+      </div>
+
+      <!-- Rescue Button -->
+      <button id="rescueBtn" class="btn-primary" disabled>
+        <span class="btn-icon">🚑</span>
+        Rescue This Conversation
+      </button>
+
+      <!-- Options -->
+      <div class="options">
+        <label class="option-row">
+          <span>Analyzer</span>
+          <select id="analyzerSelect" class="select-input">
+            <option value="none">Rule-based (Fast, Free)</option>
+            <option value="gemini">Gemini Flash (Better)</option>
+            <option value="claude">Claude Haiku</option>
+          </select>
+        </label>
+
+        <label class="option-row">
+          <span>Sanitization</span>
+          <select id="sanitizationSelect" class="select-input">
+            <option value="minimal">Minimal</option>
+            <option value="balanced" selected>Balanced</option>
+            <option value="aggressive">Aggressive</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- API Settings (Collapsible) -->
+      <div class="settings-section">
+        <div class="settings-header" id="settingsToggle">
+          <span>⚙️ API Settings (Optional)</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div id="settingsContent" class="settings-content hidden">
+          <p class="settings-hint">Provide API keys for better analysis quality</p>
+          
+          <div class="input-group">
+            <label for="geminiApiKey">🤖 Gemini API Key:</label>
+            <input type="password" id="geminiApiKey" placeholder="AIza..." />
+            <small><a href="https://aistudio.google.com/app/apikey" target="_blank">Get free key</a></small>
+          </div>
+          
+          <div class="input-group">
+            <label for="claudeApiKey">🧠 Claude API Key:</label>
+            <input type="password" id="claudeApiKey" placeholder="sk-ant-..." />
+            <small><a href="https://console.anthropic.com/" target="_blank">Get key</a></small>
+          </div>
+          
+          <button id="saveKeysBtn" class="save-keys-btn">Save Keys</button>
+          <div id="keysSavedMsg" class="keys-saved-msg hidden">✅ Keys saved securely</div>
+        </div>
+      </div>
+
+      <!-- Rescue Button -->
+      <!-- <button id="rescueBtn" class="rescue-btn">
+        🚑 Rescue This Conversation
+      </button> -->
+    </div>
+
+    <!-- Results View (hidden by default) -->
+    <div id="resultsView" class="hidden">
+      <div class="results-header">
+        <h3>✅ Rescue Complete!</h3>
+      </div>
+
+      <div class="results-stats">
+        <div class="stat-item">
+          <div class="stat-label">Original</div>
+          <div class="stat-value" id="originalCount">--</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Removed</div>
+          <div class="stat-value" id="removedCount">--</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Reduction</div>
+          <div class="stat-value" id="reductionPercent">--</div>
+        </div>
+      </div>
+
+      <div class="results-loops" id="loopsDetected">
+        <!-- Dynamically populated -->
+      </div>
+
+      <div class="action-buttons">
+        <button id="copyBtn" class="btn-secondary">
+          📋 Copy to Clipboard
+        </button>
+        <button id="downloadBtn" class="btn-secondary">
+          💾 Download .md
+        </button>
+      </div>
+
+      <button id="backBtn" class="btn-text">
+        ← Back to Rescue
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <a href="#" id="settingsLink">Settings</a>
+      <span class="separator">•</span>
+      <a href="https://github.com/yourusername/context-ambulance" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
