@@ -339,7 +339,70 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       .catch(error => sendResponse({ success: false, error: error.message }));
     return true; // Keep channel open
   }
+  
+  if (request.action === 'analyzeConversation') {
+    analyzeConversation(request.data)
+      .then(result => sendResponse({ success: true, result }))
+      .catch(error => sendResponse({ success: false, error: error.message }));
+    return true;
+  }
+  
+  if (request.action === 'generateRescue') {
+    generateRescue(request.data)
+      .then(result => sendResponse({ success: true, result }))
+      .catch(error => sendResponse({ success: false, error: error.message }));
+    return true;
+  }
 });
+
+async function analyzeConversation(data) {
+  const { messages, analyzer, sanitization, platform } = data;
+  
+  // Get API keys from storage
+  const storage = await chrome.storage.local.get(['geminiApiKey', 'claudeApiKey']);
+  
+  let analysis;
+  
+  // Select analyzer based on user choice and available keys
+  if (analyzer === 'gemini' && storage.geminiApiKey) {
+    const geminiAnalyzer = new GeminiAnalyzer(storage.geminiApiKey);
+    analysis = await geminiAnalyzer.analyze(messages);
+  } else if (analyzer === 'claude' && storage.claudeApiKey) {
+    const claudeAnalyzer = new ClaudeAnalyzer(storage.claudeApiKey);
+    analysis = await claudeAnalyzer.analyze(messages);
+  } else {
+    // Fallback to simple rule-based analyzer
+    const simpleAnalyzer = new SimpleAnalyzer();
+    analysis = simpleAnalyzer.analyze(messages);
+  }
+  
+  const sanitizer = new SimpleSanitizer();
+  const { sanitized, stats } = sanitizer.sanitize(messages, analysis);
+  
+  return {
+    analysis,
+    stats,
+    sanitized_messages: sanitized
+  };
+}
+
+async function generateRescue(data) {
+  const { analysis, messages, stats, platform } = data;
+  
+  // Sanitize messages based on analysis
+  const sanitizer = new SimpleSanitizer();
+  const { sanitized } = sanitizer.sanitize(messages, analysis);
+  
+  const generator = new RescuePackageGenerator();
+  const markdown = generator.generate(analysis, sanitized, stats, platform);
+  
+  return {
+    analysis,
+    stats,
+    markdown,
+    sanitized_messages: sanitized
+  };
+}
 
 async function processConversation(data) {
   const { messages, analyzer, sanitization, platform } = data;

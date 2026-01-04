@@ -90,10 +90,47 @@
         </div>
       </div>
 
-      <!-- Rescue Button -->
-      <!-- <button id="rescueBtn" class="rescue-btn">
-        🚑 Rescue This Conversation
-      </button> -->
+
+    </div>
+
+    <!-- Preview View (hidden by default) -->
+    <div id="previewView" class="hidden">
+      <div class="preview-header">
+        <h3>📋 Review Messages</h3>
+        <p class="preview-subtitle">Uncheck messages you want to delete</p>
+      </div>
+
+      <div class="preview-controls">
+        <button id="selectAllBtn" class="control-btn">☑️ Select All</button>
+        <button id="deselectAllBtn" class="control-btn">☐ Deselect All</button>
+        <button id="keepRulesBtn" class="control-btn">🤖 AI Suggestions</button>
+      </div>
+
+      <div class="preview-stats">
+        <span id="previewRemoveCount" class="stat-text">
+          <strong>0</strong> messages selected for removal
+        </span>
+        <span id="previewReduction" class="reduction-badge">0%</span>
+      </div>
+
+      <div class="message-list" id="messageList">
+        <!-- Dynamically populated with checkbox message cards -->
+      </div>
+
+      <div class="action-buttons-row">
+        <button id="confirmRescueBtn" class="btn-primary">
+          🚑 Generate Rescue Package
+          <small class="btn-hint">Download .md for new LLM</small>
+        </button>
+        <button id="generateRevivalBtn" class="btn-secondary">
+          🔄 Generate Revival Prompt
+          <small class="btn-hint">Copy to paste in current chat</small>
+        </button>
+      </div>
+
+      <button id="cancelPreviewBtn" class="btn-text">
+        ← Back
+      </button>
     </div>
 
     <!-- Results View (hidden by default) -->
@@ -117,21 +154,60 @@
         </div>
       </div>
 
-      <div class="results-loops" id="loopsDetected">
-        <!-- Dynamically populated -->
+      <div class="results-next-steps" id="nextSteps">
+        <div class="next-steps-title">📌 Next Steps:</div>
+        <div class="next-steps-list">
+          <div class="step-item">1. Download the rescue package below</div>
+          <div class="step-item">2. Open a new chat with any LLM (ChatGPT, Claude, Gemini, etc.)</div>
+          <div class="step-item">3. Paste the entire rescue package to continue your work</div>
+        </div>
       </div>
+      <button id="downloadBtn" class="btn-primary" >
+          💾 Download
+        </button>
 
       <div class="action-buttons">
         <button id="copyBtn" class="btn-secondary">
           📋 Copy to Clipboard
         </button>
-        <button id="downloadBtn" class="btn-secondary">
-          💾 Download .md
-        </button>
+        
       </div>
 
       <button id="backBtn" class="btn-text">
         ← Back to Rescue
+      </button>
+    </div>
+
+    <!-- Revival Results View (hidden by default) -->
+    <div id="revivalResultsView" class="hidden">
+      <div class="results-header">
+        <h3>✅ Revival Prompt Ready!</h3>
+      </div>
+
+      <div class="revival-instructions">
+        <div class="instruction-title">📌 How to use:</div>
+        <div class="instruction-text">
+          The revival prompt has been copied to your clipboard. 
+          Go back to your current chat and paste it to reset the conversation.
+        </div>
+      </div>
+
+      <div class="revival-prompt-preview">
+        <div class="preview-label">Preview:</div>
+        <textarea id="revivalPromptText" readonly></textarea>
+      </div>
+
+      <div class="action-buttons">
+        <button id="copyRevivalBtn" class="btn-primary">
+          📋 Copy to Clipboard
+        </button>
+        <button id="downloadRevivalBtn" class="btn-secondary">
+          💾 Download as .md
+        </button>
+      </div>
+
+      <button id="backFromRevivalBtn" class="btn-text">
+        ← Back to Preview
       </button>
     </div>
 

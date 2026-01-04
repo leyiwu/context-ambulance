@@ -27,27 +27,38 @@
       // ChatGPT uses data-message-author-role attribute
       const messageElements = document.querySelectorAll('[data-message-author-role]');
       
+      console.log('ChatGPT Scraper: Found', messageElements.length, 'message elements');
+      
       if (messageElements.length === 0) {
         // Fallback: try alternative selectors
+        console.log('ChatGPT Scraper: Using fallback method');
         return this.scrapeFallback();
       }
 
-      messageElements.forEach((element) => {
+      messageElements.forEach((element, index) => {
         const role = element.getAttribute('data-message-author-role');
         const contentDiv = element.querySelector('[data-message-id]') || element;
+        
+        console.log(`Message ${index}: role="${role}"`);
         
         // Get text content, preserving code blocks
         const content = this.extractContent(contentDiv);
         
         if (content.trim()) {
-          messages.push({
+          const msg = {
             role: role === 'user' ? 'USER' : 'ASSISTANT',
             content: content.trim(),
             timestamp: null // ChatGPT doesn't expose timestamps easily
-          });
+          };
+          console.log(`  -> Scraped as ${msg.role}:`, content.substring(0, 50));
+          messages.push(msg);
         }
       });
 
+      console.log('ChatGPT Scraper: Total messages scraped:', messages.length);
+      console.log('  USER messages:', messages.filter(m => m.role === 'USER').length);
+      console.log('  ASSISTANT messages:', messages.filter(m => m.role === 'ASSISTANT').length);
+      
       return messages;
     }
 

@@ -21,11 +21,63 @@ Context Ambulance acts as a paramedic:
 4. **Generate** a clean `Context_Rescue_Package.md`
 5. **Handoff** to ANY fresh LLM (Gemini, Claude, GPT-4, etc.)
 
+## Rescue vs Revival: Two Ways to Save Your Conversation
+
+Context Ambulance offers two modes depending on how stuck you are:
+
+### 🚑 **Rescue Mode** (Default - Full Reset)
+**When to use:** Deep in a doom loop (20+ messages), model is degraded, or you want to switch LLMs
+
+**What it does:**
+1. Removes all toxic loops and hallucinations
+2. Generates a clean `Context_Rescue_Package.md`
+3. You download it and paste into a **fresh LLM session** (ChatGPT → Claude, etc.)
+
+**Output:** Structured markdown file optimized for handoff
+
+**Best for:**
+- 30+ messages of repetitive errors
+- Model quality has degraded
+- Switching to a different LLM
+- Starting fresh with clean context
+
+---
+
+### 🔄 **Revival Mode** (Quick Fix - In-Place Reset)
+**When to use:** Just started looping (5-15 messages), current session is salvageable
+
+**What it does:**
+1. Identifies where the conversation went off track
+2. Generates a "course correction" prompt
+3. You paste it **into the same chat** to reset the LLM's context
+
+**Output:** Short prompt copied to clipboard, ready to paste
+
+**Best for:**
+- Model apologized 3-5 times but hasn't fully broken
+- You want to keep the current session
+- Quick fix without switching LLMs
+- Minor context poisoning
+
+---
+
+### Example Use Cases
+
+| Situation | Use Revival 🔄 | Use Rescue 🚑 |
+|-----------|----------------|---------------|
+| Model apologized 3 times | ✅ Quick fix | ❌ Too early |
+| 30+ messages of loops | ❌ Too damaged | ✅ Start fresh |
+| Want to try Claude instead of GPT | ❌ Wrong tool | ✅ Perfect |
+| Just need to clarify requirements | ✅ Fastest | ❌ Overkill |
+| Model keeps hallucinating same error | ✅ Try first | ✅ If revival fails |
+
+**Both options appear in the preview step** of the browser extension - you choose after seeing what will be removed.
+
 ## Installation
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/context-ambulance.git
+git clone https://github.com/leyiwu/context-ambulance.git
 cd context-ambulance
 
 # Create virtual environment
