@@ -4,12 +4,12 @@
 
 A browser extension that rescues poisoned LLM conversations by sanitizing chat histories and generating clean context packages.
 
-> **NEW:** Browser extension in active development! One-click rescue directly from ChatGPT, Claude, or Gemini.
+> **NEW:** Now available on the Chrome Web Store! One-click rescue directly from ChatGPT, Claude, or Gemini.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Chrome Extension](https://img.shields.io/badge/Chrome-Local%20Dev-blue?logo=google-chrome)](https://github.com/leyiwu/ContextAmbulance)
+[![Chrome Extension](https://img.shields.io/badge/Chrome-v1.0-blue?logo=google-chrome)](https://chromewebstore.google.com/detail/context-ambulance/pgbommkkfanjcleiefpjbhcppnpojmkl)
 [![Python CLI](https://img.shields.io/badge/Python-CLI%20Available-green?logo=python)](https://github.com/leyiwu/ContextAmbulance)
-[![Chrome Web Store](https://img.shields.io/badge/Web%20Store-Coming%20Soon-lightgrey)](https://github.com/leyiwu/ContextAmbulance)
+[![Chrome Web Store](https://img.shields.io/badge/Web%20Store-Available-brightgreen)](https://chromewebstore.google.com/detail/context-ambulance/pgbommkkfanjcleiefpjbhcppnpojmkl)
 
 ## The Problem: Context Poisoning
 
@@ -60,9 +60,18 @@ Context Ambulance acts as a paramedic with **two ways to save your conversation*
 
 ## Browser Extension
 
-> **Status:** Local development only. Chrome Web Store publication coming soon!
+> **Status:** ✅ Published on Chrome Web Store!
 
-### Installation (Load Unpacked)
+### Installation
+
+#### Option 1: Chrome Web Store (Recommended)
+
+1. **Install:** Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/context-ambulance/pgbommkkfanjcleiefpjbhcppnpojmkl)
+2. **Click "Add to Chrome"**
+3. **Confirm:** Click "Add extension" in the popup
+4. **Use:** Navigate to ChatGPT/Claude/Gemini and click the 🚑 icon
+
+#### Option 2: Load Unpacked (For Development)
 
 1. **Download:** Clone this repo or download ZIP
    ```bash
@@ -416,26 +425,26 @@ Context_Ambulance/
 
 ## Roadmap
 
-### v1.0 (Current)
+### v1.0 (Released)
 - ✅ Chrome extension with ChatGPT/Claude/Gemini support
 - ✅ Interactive checkbox preview
 - ✅ Dual modes (Rescue + Revival)
 - ✅ Gemini/Claude API integration
 - ✅ Rule-based fallback analyzer
 - ✅ Python CLI for batch processing
+- ✅ Chrome Web Store publication
 
-### v1.1 (Next - Ready for Release)
-- 🔜 Chrome Web Store publication
+### v1.1 (Next)
 - 🔜 Screenshots and demo video
 - 🔜 Analysis summary box in preview
 - 🔜 Keyboard shortcuts (Ctrl+Shift+R)
+- 🔜 Firefox support
 
 ### v2.0 (Future)
 - Batch rescue multiple conversations
 - Conversation diff viewer (before/after)
 - Local LLM support (Ollama)
 - VS Code extension
-- Firefox support
 - PyPI package publication
 
 ---
@@ -449,7 +458,7 @@ No! The extension works out-of-the-box with rule-based analysis. Gemini/Claude A
 Yes. When using rule-based analysis (default), everything runs locally in your browser. API analyzers only send conversation text to the respective APIs (Gemini or Claude) if you opt in.
 
 ### Which platforms are supported?
-Currently: ChatGPT (chatgpt.com), Claude (claude.ai), Gemini (gemini.google.com). Firefox support planned for v2.0.
+Currently: ChatGPT (chatgpt.com), Claude (claude.ai), Gemini (gemini.google.com). Firefox support planned for v1.1.
 
 ### Can I use this with local LLMs (Ollama)?
 Not yet, but it's on the roadmap for v2.0. You can use the rescue package output with any LLM that accepts text input.
