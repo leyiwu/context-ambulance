@@ -7,7 +7,7 @@ A browser extension that rescues poisoned LLM conversations by sanitizing chat h
 > **NEW:** Now available on the Chrome Web Store! One-click rescue directly from ChatGPT, Claude, or Gemini.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Chrome Extension](https://img.shields.io/badge/Chrome-v1.0-blue?logo=google-chrome)](https://chromewebstore.google.com/detail/context-ambulance/pgbommkkfanjcleiefpjbhcppnpojmkl)
+[![Chrome Extension](https://img.shields.io/badge/Chrome-v1.1-blue?logo=google-chrome)](https://chromewebstore.google.com/detail/context-ambulance/pgbommkkfanjcleiefpjbhcppnpojmkl)
 [![Python CLI](https://img.shields.io/badge/Python-CLI%20Available-green?logo=python)](https://github.com/leyiwu/ContextAmbulance)
 [![Chrome Web Store](https://img.shields.io/badge/Web%20Store-Available-brightgreen)](https://chromewebstore.google.com/detail/context-ambulance/pgbommkkfanjcleiefpjbhcppnpojmkl)
 
@@ -20,7 +20,7 @@ You're 50 messages deep with ChatGPT. The model gets stuck in a loop—repeating
 
 ## The Solution
 
-Context Ambulance acts as a paramedic with **two ways to save your conversation**:
+Context Ambulance acts as a paramedic with **three ways to save your conversation**:
 
 ### 🚑 **Rescue Mode** - Full Context Reset
 **When:** Deep in a doom loop (20+ messages), need to switch LLMs
@@ -47,14 +47,27 @@ Context Ambulance acts as a paramedic with **two ways to save your conversation*
 
 ---
 
+### 💾 **Export Mode** - Clean Conversation Archive
+**When:** Switching LLM providers, want to save a chat for your records
+
+**How it works:**
+1. One-click scrape from ChatGPT/Claude/Gemini
+2. Instantly downloads a clean `.md` transcript
+3. No analysis or preview step — just a straight export
+
+**Output:** Clean markdown file with role-labeled messages, auto-named from the conversation title
+
+---
+
 ### Use Case Comparison
 
-| Situation | Revival 🔄 | Rescue 🚑 |
-|-----------|------------|-----------|
-| Model apologized 3 times | ✅ Quick fix | ❌ Overkill |
-| 30+ messages of loops | ❌ Too damaged | ✅ Start fresh |
-| Want to try Claude instead | ❌ Wrong tool | ✅ Perfect |
-| Need to clarify context | ✅ Fastest | ❌ Unnecessary |
+| Situation | Revival 🔄 | Rescue 🚑 | Export 💾 |
+|-----------|------------|----------|----------|
+| Model apologized 3 times | ✅ Quick fix | ❌ Overkill | ❌ Wrong tool |
+| 30+ messages of loops | ❌ Too damaged | ✅ Start fresh | ❌ Wrong tool |
+| Want to try Claude instead | ❌ Wrong tool | ✅ Perfect | ❌ Wrong tool |
+| Switching providers, keep chat | ❌ Wrong tool | ❌ Overkill | ✅ Perfect |
+| Archive a good conversation | ❌ Wrong tool | ❌ Overkill | ✅ Perfect |
 
 ---
 
@@ -96,7 +109,8 @@ Context Ambulance acts as a paramedic with **two ways to save your conversation*
 - **Instant scraping** - No manual copy/paste
 - **Interactive preview** - Checkbox selection for each message
 - **Smart suggestions** - AI-powered loop detection (optional)
-- **Dual modes** - Rescue or Revival in one click
+- **Three modes** - Rescue, Revival, or Export in one click
+- **Auto-titled filenames** - Downloads named from your conversation title
 - **Works offline** - Rule-based analyzer requires no API keys
 
 ### Extension Quick Start
@@ -109,8 +123,9 @@ Context Ambulance acts as a paramedic with **two ways to save your conversation*
    - Green border = Recommended to keep
    - Uncheck messages you want to remove
 5. Choose action:
-   - 🚑 **Generate Rescue Package** → Download .md file
-   - 🔄 **Generate Revival Prompt** → Copy to clipboard
+   - 🚑 **Generate Rescue Package** → Download .md for new LLM
+   - 🔄 **Generate Revival Prompt** → Copy to paste in current chat
+   - 💾 **Export Conversation** → Download clean transcript (skips preview)
 6. Use output in your LLM!
 
 ---
@@ -434,7 +449,13 @@ Context_Ambulance/
 - ✅ Python CLI for batch processing
 - ✅ Chrome Web Store publication
 
-### v1.1 (Next)
+### v1.1 (Released)
+- ✅ Export Conversation mode (clean .md transcript)
+- ✅ Auto-titled filenames from conversation title
+- ✅ Clickable platform links on unsupported page error
+- ✅ Chrome Web Store + Rate Us link in popup footer
+
+### v1.2 (Next)
 - 🔜 Screenshots and demo video
 - 🔜 Analysis summary box in preview
 - 🔜 Keyboard shortcuts (Ctrl+Shift+R)
@@ -463,9 +484,10 @@ Currently: ChatGPT (chatgpt.com), Claude (claude.ai), Gemini (gemini.google.com)
 ### Can I use this with local LLMs (Ollama)?
 Not yet, but it's on the roadmap for v2.0. You can use the rescue package output with any LLM that accepts text input.
 
-### What's the difference between Rescue and Revival?
+### What's the difference between Rescue, Revival, and Export?
 - **Rescue:** Download .md file for a brand new LLM session (bigger loops, switching models)
 - **Revival:** Copy prompt to paste in current chat (quick fix, same session)
+- **Export:** Download a clean full transcript — no analysis, just archiving or provider switching
 
 ### Does this work with custom ChatGPT models?
 Yes! As long as it's hosted on chatgpt.com, the scraper will work.
