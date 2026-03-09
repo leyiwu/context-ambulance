@@ -12,7 +12,7 @@
         if (request.action === 'scrapeConversation') {
           try {
             const messages = this.scrapeMessages();
-            sendResponse({ success: true, messages });
+            sendResponse({ success: true, messages, title: this.getTitle() });
           } catch (error) {
             sendResponse({ success: false, error: error.message });
           }
@@ -119,6 +119,15 @@
       });
       
       return textContent;
+    }
+
+    getTitle() {
+      const sidebarEl = document.querySelector('nav [aria-current="page"] span, nav [aria-current="page"]');
+      if (sidebarEl && sidebarEl.textContent.trim()) {
+        return sidebarEl.textContent.trim();
+      }
+      const title = document.title.replace(/\s*[\|\u2013\-]\s*ChatGPT\s*$/i, '').trim();
+      return (title && title.toLowerCase() !== 'chatgpt') ? title : null;
     }
   }
 

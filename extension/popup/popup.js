@@ -51,10 +51,12 @@ class PopupController {
       copyRevivalBtn: document.getElementById('copyRevivalBtn'),
       downloadRevivalBtn: document.getElementById('downloadRevivalBtn'),
       backFromRevivalBtn: document.getElementById('backFromRevivalBtn'),
+      exportBtn: document.getElementById('exportBtn'),
     };
 
     // Set up event listeners
     this.elements.rescueBtn.addEventListener('click', () => this.handleRescue());
+    this.elements.exportBtn.addEventListener('click', () => this.handleExport());
     this.elements.selectAllBtn.addEventListener('click', () => this.selectAll());
     this.elements.deselectAllBtn.addEventListener('click', () => this.deselectAll());
     this.elements.keepRulesBtn.addEventListener('click', () => this.useAISuggestions());
@@ -191,7 +193,12 @@ class PopupController {
         this.elements.platformIcon.textContent = '✨';
         this.elements.platformName.textContent = 'Gemini';
       } else {
-        this.showError('Unsupported platform. Open ChatGPT, Claude, or Gemini.');
+        this.showStatus('❌', '', 'error');
+        this.elements.statusMessage.innerHTML =
+          'Unsupported platform. Open ' +
+          '<a href="https://chatgpt.com" target="_blank" style="color:#000;text-decoration:underline;">ChatGPT</a>, ' +
+          '<a href="https://claude.ai" target="_blank" style="color:#000;text-decoration:underline;">Claude</a>, or ' +
+          '<a href="https://gemini.google.com" target="_blank" style="color:#000;text-decoration:underline;">Gemini</a>.';
         return;
       }
 
@@ -206,9 +213,11 @@ class PopupController {
 
         if (response && response.success) {
           this.messages = response.messages;
+          this.conversationTitle = response.title || null;
           const count = this.messages.length;
           this.elements.messageCount.textContent = count;
           this.elements.rescueBtn.disabled = count === 0;
+          this.elements.exportBtn.disabled = count === 0;
           
           // Show detailed status (keep it visible, don't auto-hide)
           if (count === 0) {
@@ -591,7 +600,9 @@ ${conversationSummary}`;
     const blob = new Blob([this.currentRevivalPrompt], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
-    const filename = `revival_prompt_${this.platform}_${timestamp}.md`;
+    const titleSlug = this.slugifyTitle(this.conversationTitle);
+    const filenameParts = ['REVIVAL', this.platform.toUpperCase(), titleSlug, timestamp].filter(Boolean);
+    const filename = `${filenameParts.join('_')}.md`;
 
     chrome.downloads.download({
       url: url,
@@ -618,7 +629,9 @@ ${conversationSummary}`;
     const blob = new Blob([this.rescueResult.markdown], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
-    const filename = `rescue_${this.platform}_${timestamp}.md`;
+    const titleSlug = this.slugifyTitle(this.conversationTitle);
+    const filenameParts = ['RESCUE', this.platform.toUpperCase(), titleSlug, timestamp].filter(Boolean);
+    const filename = `${filenameParts.join('_')}.md`;
 
     chrome.downloads.download({
       url: url,
@@ -629,6 +642,56 @@ ${conversationSummary}`;
       this.showStatus('✅', 'Download started!', 'success');
       setTimeout(() => this.hideStatus(), 2000);
     });
+  }
+
+  handleExport() {
+    if (this.messages.length === 0) return;
+
+    const platformLabels = { chatgpt: 'ChatGPT', claude: 'Claude', gemini: 'Gemini' };
+    const aiLabel = platformLabels[this.platform] || 'AI';
+    const date = new Date().toISOString().split('T')[0];
+    const count = this.messages.length;
+
+    const lines = [
+      `# Conversation Export — ${aiLabel}`,
+      `**Exported:** ${date}  `,
+      `**Messages:** ${count}`,
+      '',
+      '---',
+      '',
+    ];
+
+    for (const msg of this.messages) {
+      const role = msg.role === 'USER' ? 'You' : aiLabel;
+      lines.push(`**${role}:** ${msg.content.trim()}`);
+      lines.push('');
+    }
+
+    lines.push('---');
+    lines.push('*Exported with [Context Ambulance](https://chromewebstore.google.com/detail/context-ambulance/pgbommkkfanjcleiefpjbhcppnpojmkl)*');
+
+    const markdown = lines.join('\n');
+    const blob = new Blob([markdown], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const titleSlug = this.slugifyTitle(this.conversationTitle);
+    const filenameParts = ['EXPORT', this.platform.toUpperCase(), titleSlug, date].filter(Boolean);
+    const filename = `${filenameParts.join('_')}.md`;
+
+    chrome.downloads.download({ url, filename, saveAs: true }, () => {
+      URL.revokeObjectURL(url);
+      this.showStatus('✅', 'Export downloaded!', 'success');
+      setTimeout(() => this.hideStatus(), 2000);
+    });
+  }
+
+  slugifyTitle(title) {
+    if (!title) return null;
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '_')
+      .substring(0, 40)
+      .replace(/_+$/g, '') || null;
   }
 
   showStatus(icon, message, type = 'info') {

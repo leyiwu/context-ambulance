@@ -12,7 +12,7 @@
         if (request.action === 'scrapeConversation') {
           try {
             const messages = this.scrapeMessages();
-            sendResponse({ success: true, messages });
+            sendResponse({ success: true, messages, title: this.getTitle() });
           } catch (error) {
             sendResponse({ success: false, error: error.message });
           }
@@ -111,6 +111,15 @@
       });
       
       return textContent.trim();
+    }
+
+    getTitle() {
+      const sidebarEl = document.querySelector('[aria-current="page"] p, [aria-selected="true"] p, [aria-current="page"] span');
+      if (sidebarEl && sidebarEl.textContent.trim()) {
+        return sidebarEl.textContent.trim();
+      }
+      const title = document.title.replace(/\s*[\|\u2013\-]\s*Claude\s*.*$/i, '').trim();
+      return (title && title.toLowerCase() !== 'claude') ? title : null;
     }
   }
 

@@ -169,6 +169,18 @@ body {
   color: white;
 }
 
+#exportBtn {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+#exportBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-text {
   width: 100%;
   padding: 10px;
